@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+	
+<body>
+	<header th:replace="layout/layout :: header"> </header>
+	<div th:replace="layout/layout :: container"> </div>
+        <!-- Page wrapper  -->
+        <div class="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="white-box">
+                            <h3 class="box-title">Informacion de los docentes</h3>
+                            <br>
+                            <div class="table-responsive">
+                                <table class="table table-striped text-nowrap">
+                                    <thead class="thead">
+                                        <tr>
+                                            <th class="border-top-0">#</th>
+                                            <th class="border-top-0">First Name</th>
+                                            <th class="border-top-0">Last Name</th>
+                                            <th class="border-top-0">Username</th>
+                                            <th class="border-top-0">Activar/Desactivar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Deshmukh</td>
+                                            <td>Prohaska</td>
+                                            <td>@Genelia</td>
+                                            <td>
+                                                <button class="btn btn-success"> Activar </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>Deshmukh</td>
+                                            <td>Gaylord</td>
+                                            <td>@Ritesh</td>
+                                            <td>
+                                                <button class="btn btn-danger"> Desactivar </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer th:replace="layout/layout :: footer"></footer>
+        </div>
+</body>
+
+</html>
