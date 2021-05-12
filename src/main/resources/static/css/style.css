@@ -8903,27 +8903,6 @@ Notify
     color: #fff;
     padding: 0 15px; }
 
-.search-box .app-search {
-  z-index: 110;
-  width: 100%;
-  top: -1px;
-  -webkit-box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
-  box-shadow: 1px 0px 20px rgba(0, 0, 0, 0.08);
-  display: none;
-  left: 0px; }
-  .search-box .app-search .form-control {
-    padding: 23px 40px 20px 23px;
-    -webkit-transition: 0.2s ease-in;
-    -o-transition: 0.2s ease-in;
-    transition: 0.2s ease-in; }
-    .search-box .app-search .form-control:focus {
-      border-color: transparent; }
-  .search-box .app-search .srh-btn {
-    position: absolute;
-    top: 23px;
-    cursor: pointer;
-    right: 20px; }
-
 /*******************
 Designed dropdown
 ******************/

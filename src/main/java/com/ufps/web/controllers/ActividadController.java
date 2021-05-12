@@ -1,17 +1,13 @@
 package com.ufps.web.controllers;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -66,23 +62,6 @@ public class ActividadController {
 	public String actividad(Model model) {
 		model.addAttribute("actividad", new Actividad());
 		return "actividad";
-	}
-	
-	@GetMapping(value = "/evidencias/{filename:.+}")
-	public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
-
-		Resource recurso = null;
-
-		try {
-			recurso = uploadService.load(filename);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso.getFilename() + "\"")
-				.body(recurso);
 	}
 
 	@Secured({"ROLE_ADMIN", "ROLE_DOCENTE"})
@@ -142,7 +121,6 @@ public class ActividadController {
 		e.setUrl(uniqueFilename);
 		ArrayList<Evidencia> ev = new ArrayList<>();
 
-		System.out.println("CONVENIO: " + convenio);
 		Convenio c = new Convenio();
 		if (convenioDao.findByNumConvenio(convenio) == null) {
 			model.addAttribute("error", "Numero de convenio inexistente");
@@ -181,7 +159,4 @@ public class ActividadController {
 
 		return "redirect:/";
 	}
-	
-	
-
 }

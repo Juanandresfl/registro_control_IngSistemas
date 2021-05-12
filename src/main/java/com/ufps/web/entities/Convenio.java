@@ -2,6 +2,8 @@ package com.ufps.web.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
 import java.util.Date;
 import java.util.List;
 
@@ -21,19 +23,26 @@ public class Convenio implements Serializable {
 	@Column(name="id_convenio")
 	private int idConvenio;
 
+	@NotBlank(message = "El campo no debe estar vacio")
 	private String descripcion;
 
 	@Temporal(TemporalType.DATE)
 	private Date fecha;
 
+	@NotBlank(message = "El campo no debe estar vacio")
 	private String institucion;
 
+	@NotBlank(message = "El campo no debe estar vacio")
 	@Column(name="num_convenio")
 	private String numConvenio;
 
 	//bi-directional many-to-one association to Actividad
 	@OneToMany(mappedBy="convenio")
 	private List<Actividad> actividads;
+	
+	//bi-directional many-to-one association to Evidencia
+		@OneToMany(mappedBy="convenio")
+	private List<Evidencia> evidencias;
 
 	public Convenio() {
 	}
@@ -84,6 +93,14 @@ public class Convenio implements Serializable {
 
 	public void setActividads(List<Actividad> actividads) {
 		this.actividads = actividads;
+	}
+
+	public List<Evidencia> getEvidencias() {
+		return evidencias;
+	}
+
+	public void setEvidencias(List<Evidencia> evidencias) {
+		this.evidencias = evidencias;
 	}
 
 	public Actividad addActividad(Actividad actividad) {

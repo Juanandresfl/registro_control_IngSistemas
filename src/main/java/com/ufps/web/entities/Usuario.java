@@ -2,6 +2,9 @@ package com.ufps.web.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 import java.util.List;
 
 
@@ -16,20 +19,29 @@ public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+//	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@NotBlank(message = "El campo no debe estar vacio")
 	private String codigo;
 
+	@NotBlank(message = "El campo no debe estar vacio")
 	private String apellido;
 
 	private String estado;
 
+	@NotBlank(message = "El campo no debe estar vacio")
 	private String nombre;
 
+	@NotBlank(message = "El campo no debe estar vacio")
 	private String password;
 
+	@NotBlank(message = "El campo no debe estar vacio")
 	private String email;
 	
+	@Pattern(regexp = "[3][0-9]{9}", message = "Numero incompleto")
 	private String phone;
+	
+	@Column(name = "reset_password_token")
+	private String resetPasswordToken;
 
 	//bi-directional many-to-one association to Actividad
 	@OneToMany(mappedBy="usuario")
@@ -105,6 +117,14 @@ public class Usuario implements Serializable {
 
 	public void setActividads(List<Actividad> actividads) {
 		this.actividads = actividads;
+	}
+
+	public String getResetPasswordToken() {
+		return resetPasswordToken;
+	}
+
+	public void setResetPasswordToken(String resetPasswordToken) {
+		this.resetPasswordToken = resetPasswordToken;
 	}
 
 	public Actividad addActividad(Actividad actividad) {

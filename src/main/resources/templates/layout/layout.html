@@ -6,8 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>UFPS</title>
 <!-- Favicon icon -->
-<link rel="icon" type="image/png" sizes="16x16"
-	th:href="@{/plugins/images/logo.png}">
+<link href="https://ingsistemas.cloud.ufps.edu.co/rsc/img/favicon.ico" rel="Shortcut icon">
 <!-- Custom CSS -->
 <link th:href="@{/css/style.min.css}" rel="stylesheet">
 </head>
@@ -21,20 +20,28 @@
 					<div class="navbar-header" data-logobg="skin6">
 						<!-- Logo -->
 						<a class="navbar-brand" th:href="@{/}"> <img
-							th:src="@{/plugins/images/logo-ufps.png}" width="110px"
+							th:src="@{/plugins/images/logo.png}" width="110px"
 							height="100px" alt="homepage" />
 						</a>
 					</div>
 				</div>
 
 				<div class="col-md-8 col-sm-8">
+					<a class="nav-toggler waves-effect waves-light text-dark d-block d-md-none"
+                        href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
 					<div class="navbar-collapse collapse" id="navbarSupportedContent"
 						data-navbarbg="skin5">
-						<h1 th:text="${titulo}"></h1>
+						<h1 class="nav-toggler waves-effect waves-light text-dark" th:text="${titulo}"></h1>
 						<ul class="navbar-nav ms-auto d-flex align-items-center dropdown">
-							<li><a class="btn btn-danger btn-lg dropdown-toggle"
-								href="#" id="dropdownMenuLink" data-bs-toggle="dropdown"
-								aria-expanded="false"> Admin </a>
+							<li>
+							<input sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-md  dropdown-toggle"
+								id="dropdownMenuLink" data-bs-toggle="dropdown"
+								aria-expanded="false" value="Admin" readonly>
+							
+							<input sec:authorize="hasRole('ROLE_DOCENTE')" class="btn btn-danger btn-md  dropdown-toggle"
+								id="dropdownMenuLink" data-bs-toggle="dropdown"
+								aria-expanded="false" value="Docente" readonly>
+								
 								<div class="dropdown-divider"></div>
 								<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 									<li>
@@ -89,7 +96,7 @@
 								class="fa fa-user" aria-hidden="true"></i> <span
 								class="hide-menu">Profile</span>
 						</a></li>
-						<li class="sidebar-item"><a
+						<li class="sidebar-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
 							class="sidebar-link waves-effect waves-dark sidebar-link"
 							th:href="@{/docentes}" aria-expanded="false"> <i
 								class="fa fa-table" aria-hidden="true"></i> <span
@@ -100,6 +107,27 @@
 							th:href="@{/actividad/}" aria-expanded="false"> <i
 								class="fa fa-columns" aria-hidden="true"></i> <span
 								class="hide-menu">Registrar actividad</span>
+						</a></li>
+						
+						<li class="sidebar-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="sidebar-link waves-effect waves-dark sidebar-link"
+							th:href="@{/convenio}" aria-expanded="false"> <i
+								class=" far fa-folder" aria-hidden="true"></i> <span
+								class="hide-menu">Registrar Convenio</span>
+						</a></li>
+						
+						<li class="sidebar-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="sidebar-link waves-effect waves-dark sidebar-link"
+							th:href="@{/add-docente}" aria-expanded="false"> <i
+								class="fas fa-user-plus" aria-hidden="true"></i> <span
+								class="hide-menu">Registrar Docente</span>
+						</a></li>
+						
+						<li class="sidebar-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="sidebar-link waves-effect waves-dark sidebar-link"
+							th:href="@{/listar-convenios}" aria-expanded="false"> <i
+								class="fas fa-list" aria-hidden="true"></i> <span
+								class="hide-menu">Listar Convenios </span>
 						</a></li>
 					</ul>
 				</nav>

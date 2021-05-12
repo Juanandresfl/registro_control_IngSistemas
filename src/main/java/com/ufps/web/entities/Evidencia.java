@@ -29,6 +29,11 @@ public class Evidencia implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="id_actividad")
 	private Actividad actividad;
+	
+	//bi-directional many-to-one association to Actividad
+	@ManyToOne
+	@JoinColumn(name="id_convenio")
+	private Convenio convenio;
 
 	public Evidencia() {
 	}
@@ -65,4 +70,12 @@ public class Evidencia implements Serializable {
 		this.actividad = actividad;
 	}
 
+	public Convenio getConvenio() {
+		return convenio;
+	}
+
+	public void setConvenio(Convenio convenio) {
+		this.convenio = convenio;
+	}
+	
 }

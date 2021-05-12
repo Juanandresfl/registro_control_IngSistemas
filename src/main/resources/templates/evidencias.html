@@ -56,7 +56,7 @@
 															</button>
 														</div>
 														<div class="modal-body" th:each="e: ${evidencias}">
-															<img class="img-thumbnail rounded float-left"style="max-width: 25%;"
+															<img class="img-thumbnail rounded float-left img-responsive mx-auto d-block" style="max-width: 50%;"
 																th:src="@{'/evidencias/' + ${e.url}}"
 																th:alt="${e.idEvidencia}" />
 														</div>

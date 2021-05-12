@@ -3,8 +3,6 @@ package com.ufps.web.auth.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,7 +22,6 @@ public class UserDetailService implements UserDetailsService {
 	@Autowired
 	private IUsuarioDao usuarioDao;
 	
-	private Logger logger = LoggerFactory.getLogger(UserDetailService.class);
 
 	@Override
 	@Transactional(readOnly=true)
@@ -33,7 +30,6 @@ public class UserDetailService implements UserDetailsService {
 		
 //		se utiliza el parametro llamado username, ya que Spring maneja automatico este nombre
 		Usuario usuario = usuarioDao.findByCodigo(username);
-		logger.info("CODIGO USER" + username);
 		
 		if (usuario == null) {
 			throw new UsernameNotFoundException("Usuario: " + username + "No existe en el sistema");
@@ -47,6 +43,8 @@ public class UserDetailService implements UserDetailsService {
         }
         
         if(usuario.getEstado().equalsIgnoreCase("inactivo")) {
+        	
+        	System.out.println("Error en el Login: usuario '" + username + "' esta desactivado!, comuniquese con el administrador del sistema");
         	throw new UsernameNotFoundException("Error en el Login: usuario '" + username + "' esta desactivado!, comuniquese con el administrador del sistema");
         }
         
