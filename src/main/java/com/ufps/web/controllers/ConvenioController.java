@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -25,19 +26,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.ufps.web.auth.service.IUploadFileService;
+import com.ufps.web.auth.service.IDocumentFileService;
 import com.ufps.web.entities.Convenio;
 import com.ufps.web.entities.Evidencia;
 import com.ufps.web.repository.dao.IConvenioDao;
 import com.ufps.web.repository.dao.IEvidenciaDao;
 
+@Secured("ROLE_ADMIN")
 @Controller
 @SessionAttributes("convenio")
 public class ConvenioController {
 
 	@Autowired
-	IUploadFileService uploadService;
+	IDocumentFileService documentService;
 
 	@Autowired
 	IConvenioDao convenioDao;
@@ -45,7 +48,6 @@ public class ConvenioController {
 	@Autowired
 	IEvidenciaDao evidenciaDao;
 
-	@Secured("ROLE_ADMIN")
 	@GetMapping("convenio")
 	public String addConvenio(Model model) {
 		model.addAttribute("titulo", "Registrar Convenio");
@@ -53,12 +55,13 @@ public class ConvenioController {
 		return "convenio";
 	}
 
-	@Secured("ROLE_ADMIN")
-	@GetMapping("listar-convenios")
-	public String listarConvenios(Model model) {
+	@GetMapping({"listar-convenios","convenios-filtrados/{filtradas}"})
+	public String listarConvenios(Model model, @PathVariable(required = false) String filtradas) {
 		model.addAttribute("titulo", "Listado de convenios");
-		List<Convenio> convenios = convenioDao.findAll();
-		model.addAttribute("convenios",convenios);
+		if (filtradas == null) {
+			List<Convenio> convenios = convenioDao.findAll();
+			model.addAttribute("convenios", convenios);
+		}
 		return "listaConvenios";
 	}
 
@@ -77,7 +80,7 @@ public class ConvenioController {
 		String uniqueFilename = null;
 		if (!archivo.isEmpty()) {
 			try {
-				uniqueFilename = uploadService.copy(archivo);
+				uniqueFilename = documentService.copy(archivo);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -103,18 +106,16 @@ public class ConvenioController {
 		return "convenio";
 	}
 	
-	@Secured("ROLE_ADMIN")
 	@RequestMapping("/download/{filename}")
 	 @ResponseBody
 	 public void show(@PathVariable String filename, HttpServletResponse response) {
 		 
-		System.out.println("ENTRO ACA");
 		 response.setContentType("application/pdf");
 		 response.setHeader("Content-Transfer-Encoding", "quoted-printable");
 		 
 		 try {
 			 BufferedOutputStream bos= new BufferedOutputStream(response.getOutputStream());
-			 FileInputStream file =new FileInputStream(this.uploadService.getPath(filename).toString());
+			 FileInputStream file =new FileInputStream(this.documentService.getPath(filename).toString());
 			 byte [] buf=new byte[1024];
 			 int len;
 			 while((len=file.read(buf))>0) {
@@ -130,4 +131,19 @@ public class ConvenioController {
 			e.printStackTrace();
 		}
 	 }
+	
+	@PostMapping("filtrar-convenios")
+	public String listarConvenios( @RequestParam  @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde,
+	        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta, RedirectAttributes flash){
+	
+	try {
+		flash.addFlashAttribute("convenios", convenioDao.filtrarConvenios(desde, hasta));
+		return  "redirect:/convenios-filtrados/1";
+	} catch (Exception e) {
+		// TODO: handle exception
+		flash.addFlashAttribute("error", e.getMessage());
+	}
+	
+	return "listaConvenios";	
+}
 }

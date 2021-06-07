@@ -7,5 +7,4 @@ import com.ufps.web.entities.Rol;
 
 @Repository
 public interface IRol extends JpaRepository<Rol, Integer> {
-
 }

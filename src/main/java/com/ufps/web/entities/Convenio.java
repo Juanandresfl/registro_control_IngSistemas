@@ -41,7 +41,8 @@ public class Convenio implements Serializable {
 	private List<Actividad> actividads;
 	
 	//bi-directional many-to-one association to Evidencia
-		@OneToMany(mappedBy="convenio")
+//	se coloca el fetch EAGER porque en la vista traigo directamente todas las evidencias
+	@OneToMany(mappedBy="convenio",fetch = FetchType.EAGER,cascade = CascadeType.ALL)
 	private List<Evidencia> evidencias;
 
 	public Convenio() {

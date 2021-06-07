@@ -37,7 +37,7 @@ public class Usuario implements Serializable {
 	@NotBlank(message = "El campo no debe estar vacio")
 	private String email;
 	
-	@Pattern(regexp = "[3][0-9]{9}", message = "Numero incompleto")
+	@Pattern(regexp = "[3][0-9]{9}", message = "Numero invalido")
 	private String phone;
 	
 	@Column(name = "reset_password_token")

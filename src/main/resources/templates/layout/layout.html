@@ -92,9 +92,9 @@
 						</a></li>
 						<li class="sidebar-item"><a
 							class="sidebar-link waves-effect waves-dark sidebar-link"
-							th:href="@{/profile}" aria-expanded="false"> <i
+							th:href="@{/perfil}" aria-expanded="false"> <i
 								class="fa fa-user" aria-hidden="true"></i> <span
-								class="hide-menu">Profile</span>
+								class="hide-menu">Perfil</span>
 						</a></li>
 						<li class="sidebar-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
 							class="sidebar-link waves-effect waves-dark sidebar-link"
@@ -113,21 +113,28 @@
 							class="sidebar-link waves-effect waves-dark sidebar-link"
 							th:href="@{/convenio}" aria-expanded="false"> <i
 								class=" far fa-folder" aria-hidden="true"></i> <span
-								class="hide-menu">Registrar Convenio</span>
+								class="hide-menu">Registrar convenio</span>
 						</a></li>
 						
 						<li class="sidebar-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
 							class="sidebar-link waves-effect waves-dark sidebar-link"
-							th:href="@{/add-docente}" aria-expanded="false"> <i
+							th:href="@{/registrar-docente}" aria-expanded="false"> <i
 								class="fas fa-user-plus" aria-hidden="true"></i> <span
-								class="hide-menu">Registrar Docente</span>
+								class="hide-menu">Registrar docente</span>
+						</a></li>
+						
+						<li class="sidebar-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="sidebar-link waves-effect waves-dark sidebar-link"
+							th:href="@{/tipoActividad}" aria-expanded="false"> <i
+								class=" fas fa-clipboard-list" aria-hidden="true"></i> <span
+								class="hide-menu">Registrar tipo de actividad</span>
 						</a></li>
 						
 						<li class="sidebar-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
 							class="sidebar-link waves-effect waves-dark sidebar-link"
 							th:href="@{/listar-convenios}" aria-expanded="false"> <i
 								class="fas fa-list" aria-hidden="true"></i> <span
-								class="hide-menu">Listar Convenios </span>
+								class="hide-menu">Listar convenios </span>
 						</a></li>
 					</ul>
 				</nav>

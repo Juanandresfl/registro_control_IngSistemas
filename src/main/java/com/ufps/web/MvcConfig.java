@@ -18,9 +18,13 @@ public class MvcConfig implements WebMvcConfigurer{
 //		super.addResourceHandlers(registry);
 		
 		String resourcePath = Paths.get("evidencias").toAbsolutePath().toUri().toString();
+		String resource = Paths.get("documentos").toAbsolutePath().toUri().toString();
 		
 		registry.addResourceHandler("/evidencias/**")
 		.addResourceLocations(resourcePath);
+		
+		registry.addResourceHandler("/documentos/**")
+		.addResourceLocations(resource);
 		
 	}
 	

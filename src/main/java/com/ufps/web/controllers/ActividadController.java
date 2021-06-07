@@ -1,9 +1,12 @@
 package com.ufps.web.controllers;
 
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,6 +65,7 @@ public class ActividadController {
 	@GetMapping("/")
 	public String actividad(Model model) {
 		model.addAttribute("actividad", new Actividad());
+		model.addAttribute("tipo", tipoActividadDao.findAll());
 		return "actividad";
 	}
 
@@ -73,7 +78,8 @@ public class ActividadController {
 			return "redirect:/";
 		}
 		model.addAttribute("actividad", actividadDao.findById(id).orElse(null));
-		model.addAttribute("evidencias",evidenciaDao.findByActividad(id));
+		model.addAttribute("evidencias",evidenciaDao.filtrarImg(id));
+		model.addAttribute("documento", evidenciaDao.filtrarXls(id));
 		model.addAttribute("titulo", " Evidencias de la actividad");
 		return "/evidencias";
 	}
@@ -83,17 +89,18 @@ public class ActividadController {
 	public String listarActividades( @RequestParam  @DateTimeFormat(pattern = "yyyy-MM-dd") Date desde,
 		        @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date hasta, RedirectAttributes flash){
 		
-		flash.addFlashAttribute("actividades", actividadDao.filtrarActividades(desde, hasta));
-		
-		for (Actividad a : actividadDao.filtrarActividades(desde, hasta)) {
-			
-			System.out.println("ACTIVIDADES : "+ a.getIdActividad());
+		try {
+			flash.addFlashAttribute("actividades", actividadDao.filtrarActividades(desde, hasta));
+			return  "redirect:/listar/1";
+		} catch (Exception e) {
+			// TODO: handle exception
+			flash.addFlashAttribute("error", e.getMessage());
 		}
 		
-			
-		return  "redirect:/listar/1";
+		return "dashboard";	
 	}
 
+	@Secured({"ROLE_ADMIN", "ROLE_DOCENTE"})
 	@PostMapping("/")
 	public String registrarActividad(@Valid Actividad actividad, BindingResult result, @RequestParam String tipo,
 			@RequestParam String convenio, @RequestParam("evidencia") MultipartFile evidencia, Model model,
@@ -159,4 +166,68 @@ public class ActividadController {
 
 		return "redirect:/";
 	}
+	
+	@Secured({"ROLE_ADMIN", "ROLE_DOCENTE"})
+	@PostMapping("/agregar-imagen")
+	public String agregarImagen(@RequestParam String id,MultipartFile imagen,RedirectAttributes flash) {
+		
+		String uniqueFilename = null;
+		if (!imagen.isEmpty()) {
+			try {
+				uniqueFilename = uploadService.copy(imagen);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		Actividad a = actividadDao.findById(Integer.parseInt(id)).orElse(null);
+		
+		Evidencia e = new Evidencia();
+		e.setFecha(new Date());
+		e.setUrl(uniqueFilename);
+		e.setActividad(a);
+		ArrayList<Evidencia> ev = new ArrayList<>();
+		ev.add(e);
+		
+		a.setEvidencias(ev);
+		evidenciaDao.save(e);
+		actividadDao.save(a);
+		
+		flash.addFlashAttribute("success", "Imagen agregada!");
+		
+		return "redirect:/";
+	}
+	
+	@Secured({"ROLE_ADMIN", "ROLE_DOCENTE"})
+	@RequestMapping("/download/{filename}")
+	 @ResponseBody
+	 public void show(@PathVariable String filename, HttpServletResponse response) {
+		 
+		if(filename.contains("xls")) {
+			response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			response.setHeader("Content-Transfer-Encoding", "quoted-printable");
+		}
+		
+		 response.setContentType("application/vnd.ms-excel");
+		 response.setHeader("Content-Transfer-Encoding", "quoted-printable");
+		 
+		 try {
+			 BufferedOutputStream bos= new BufferedOutputStream(response.getOutputStream());
+			 FileInputStream file =new FileInputStream(this.uploadService.getPath(filename).toString());
+			 byte [] buf=new byte[1024];
+			 int len;
+			 while((len=file.read(buf))>0) {
+				 bos.write(buf, 0, len);
+			 }
+			 
+			 bos.close();
+			 file.close();
+			 response.flushBuffer();
+			
+		} catch (Exception e) {
+			System.out.println("Ha ocurrido un error");
+			e.printStackTrace();
+		}
+	 }
 }

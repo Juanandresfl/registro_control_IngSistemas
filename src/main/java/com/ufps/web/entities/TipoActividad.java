@@ -2,6 +2,8 @@ package com.ufps.web.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
 import java.util.List;
 
 
@@ -20,7 +22,11 @@ public class TipoActividad implements Serializable {
 	@Column(name="id_tipo_actividad")
 	private int idTipoActividad;
 
+	@NotBlank(message = "El campo no debe estar vacio")
 	private String nombre;
+	
+	@NotBlank(message = "El campo no debe estar vacio")
+	private String descripcion;
 
 	//bi-directional many-to-one association to Actividad
 	@OneToMany(mappedBy="tipoActividad")
@@ -43,6 +49,14 @@ public class TipoActividad implements Serializable {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 	public List<Actividad> getActividads() {

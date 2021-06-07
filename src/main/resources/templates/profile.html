@@ -11,6 +11,7 @@
             <!-- Container fluid  -->
             <!-- ============================================================== -->
             <div class="container-fluid">
+            <div th:replace="layout/layout :: mensajes"></div>
                 <!-- Row -->
                 <div class="row" th:each="u: ${usuario}">
                     <!-- Column -->
@@ -37,47 +38,57 @@
                     <div class="col-lg-8 col-xlg-9 col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <form class="form-horizontal form-material">
+                                <form class="form-horizontal form-material" th:action="@{/actualizar-perfil}" 
+                                th:object="${usuario}" method="post">
                                     <div class="form-group mb-4">
                                         <label class="col-md-12 p-0">Nombres</label>
                                         <div class="col-md-12 border-bottom p-0">
                                             <input type="text"
-                                                class="form-control p-0 border-0" th:value="${u.nombre}"> </div>
+                                                class="form-control p-0 border-0" th:value="${u.nombre}" th:field="*{nombre}">
+			                                <small class="form-text text-danger"
+												th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">
+											</small>                                               
+                                         </div>
                                     </div>
                                     <div class="form-group mb-4">
                                         <label for="example-email" class="col-md-12 p-0">Apellidos</label>
                                         <div class="col-md-12 border-bottom p-0">
-                                            <input type="email"
+                                            <input type="text"
                                                 class="form-control p-0 border-0" name="example-email"
-                                                id="example-email" th:value="${u.apellido}">
-                                        </div>
-                                    </div>
-                                    <div class="form-group mb-4">
-                                        <label class="col-md-12 p-0">Password</label>
-                                        <div class="col-md-12 border-bottom p-0">
-                                            <input type="password" value="password" class="form-control p-0 border-0">
+                                                id="example-email" th:value="${u.apellido}" th:field="*{apellido}">
+                                            <small class="form-text text-danger"
+												th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}">
+											</small>                                        
                                         </div>
                                     </div>
                                     <div class="form-group mb-4">
                                         <label class="col-md-12 p-0">Email</label>
                                         <div class="col-md-12 border-bottom p-0">
                                             <input type="email"
-                                                class="form-control p-0 border-0" th:value="${u.email}">
+                                                class="form-control p-0 border-0" th:value="${u.email}" th:field="*{email}">
+                                            <small class="form-text text-danger"
+												th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+											</small> 
                                         </div>
                                     </div>
                                     <div class="form-group mb-4">
                                         <label class="col-md-12 p-0">Telefono</label>
                                         <div class="col-md-12 border-bottom p-0">
-                                            <input type="text" class="form-control p-0 border-0" th:value="${u.phone}">
+                                            <input type="text" class="form-control p-0 border-0" th:value="${u.phone}" th:field="*{phone}">
+                                            <small class="form-text text-danger"
+												th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">
+											</small> 
                                         </div>
                                     </div>
                                      <div class="form-group mb-4">
                                         <label for="example-email" class="col-md-12 p-0">Estado</label>
                                         <div class="col-md-12 border-bottom p-0">
                                             <input type="text"
-                                                class="form-control p-0 border-0" th:value="${u.estado}" disabled>
+                                                class="form-control p-0 border-0" th:value="${u.estado}" th:field="*{estado}" readonly>
                                         </div>
                                     </div>
+                                    <input type="hidden" th:value="${u.codigo}" th:field="*{codigo}">
+                                    <input type="hidden" th:value="${u.password}" th:field="*{password}">
                                     <div class="form-group mb-4">
                                         <div class="col-sm-12">
                                             <button class="btn btn-danger">Actualizar Perfil</button>

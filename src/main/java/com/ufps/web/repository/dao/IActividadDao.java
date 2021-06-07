@@ -14,4 +14,7 @@ public interface IActividadDao extends JpaRepository<Actividad, Integer> {
 
 	@Query("select a from Actividad a where a.fecha between ?1 and ?2")
 	public List<Actividad> filtrarActividades(Date desde,Date hasta);
+	
+	@Query("select a from Actividad a where a.usuario.codigo =?1")
+	public List<Actividad>actividadesDocente(String codigo);
 }

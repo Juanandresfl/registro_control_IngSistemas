@@ -17,11 +17,11 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class UploadFileServiceImpl implements IUploadFileService {
+public class DocumentServiceImpl implements IDocumentFileService {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
-	private final static String UPLOADS_FOLDER = "evidencias";
+	private final static String UPLOADS_FOLDER = "documentos";
 
 	@Override
 	public Resource load(String filename) throws MalformedURLException {

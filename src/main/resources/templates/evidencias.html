@@ -9,7 +9,7 @@
 	<!-- Page wrapper  -->
 	<div class="page-wrapper">
 		<!-- Container fluid  -->
-		<div class="container-fluid">
+		<div class="container-fluid text-center">
 			<div class="row">
 				<div class="col-md-12 col-lg-12 col-sm-12">
 					<div class="white-box">
@@ -24,24 +24,36 @@
 										<th class="border-top-0">Responsable</th>
 										<th class="border-top-0">Fecha</th>
 										<th class="border-top-0">Evidencias</th>
+										<th class="border-top-0">Agregar imagen</th>
 									</tr>
 								</thead>
 								<tbody th:each="a: ${actividad}">
 									<tr>
+
 										<td class="txt-oflo" th:text="${a.idActividad}"></td>
 										<td th:text="${a.usuario.nombre}"></td>
 										<td class="txt-oflo" th:text="${a.fecha}"></td>
-										<td><span class="text-success">
-												<button class="btn btn-outline-success">
-													Descargar excel <i class="far fa-file-excel"> </i>
-												</button>
-										</span> &nbsp <!--                                                 <span class="text-success"> -->
-											<button type="button" class="btn btn-outline-secondary"
-												data-toggle="modal" data-target="#exampleModalCenter">
-												Ver fotos <i class="fas fa-image"> </i>
-											</button> <!--                                                 </span> -->
+										<td>
+											<div class="row">
+												<div class="col-md-6 col-sm-6">
+													<div th:each="d: ${documento}">
+														<a th:if="${d != null }"
+															th:href="@{'/actividad/download/' + ${d.url}}"
+															target="blank" class="btn btn-outline-success btn-sm">
+															<i class=" fas fa-download" aria-hidden="true"></i>&nbsp
+															Descargar Excel
+														</a>
+													</div>
 
-											<!-- Modal -->
+												</div>
+												<div class="col-md-6 col-sm-6">
+													<button type="button"
+														class="btn btn-outline-secondary btn-sm"
+														data-toggle="modal" data-target="#exampleModalCenter">
+														Ver fotos <i class="fas fa-image"> </i>
+													</button>
+												</div>
+											</div> <!-- Modal -->
 											<div class="modal fade" id="exampleModalCenter" tabindex="-1"
 												role="dialog" aria-labelledby="exampleModalCenterTitle"
 												aria-hidden="true">
@@ -56,9 +68,11 @@
 															</button>
 														</div>
 														<div class="modal-body" th:each="e: ${evidencias}">
-															<img class="img-thumbnail rounded float-left img-responsive mx-auto d-block" style="max-width: 50%;"
-																th:src="@{'/evidencias/' + ${e.url}}"
-																th:alt="${e.idEvidencia}" />
+															<img th:if="${e != null}"
+																class="img-thumbnail rounded float-left img-responsive mx-auto d-block"
+																style="max-width: 50%;"
+																th:src="@{'/evidencias/' + ${e.url}}" />
+															<hr>
 														</div>
 														<div class="modal-footer">
 															<button type="button" class="btn btn-danger"
@@ -66,7 +80,27 @@
 														</div>
 													</div>
 												</div>
-											</div></td>
+											</div>
+										</td>
+										<td>
+											<form th:action="@{/actividad/agregar-imagen}" method="post"
+												enctype="multipart/form-data">
+												<div class="row">
+													<div class="col-md-9 col-sm-9">
+														<span> <input class="form-control form-control-sm"
+															id="formFileSm" type="file" accept="image/*"
+															name="imagen" /> <input type="hidden"
+															th:value="${a.idActividad}" name="id">
+														</span>
+													</div>
+
+													<div class="col-md-3 col-sm-3">
+														<button type="submit"
+															class="btn btn-outline-danger btn-sm">Subir</button>
+													</div>
+												</div>
+											</form>
+										</td>
 									</tr>
 								</tbody>
 							</table>
