@@ -36,6 +36,11 @@
 										<td>
 											<div class="row">
 												<div class="col-md-6 col-sm-6">
+													<a th:if="${documento.isEmpty()}"
+															href="" class="btn btn-outline-secondary btn-sm">
+															<i class=" fas fa-download" aria-hidden="true"></i>&nbsp
+															no hay documento 
+													</a>
 													<div th:each="d: ${documento}">
 														<a th:if="${d != null }"
 															th:href="@{'/actividad/download/' + ${d.url}}"

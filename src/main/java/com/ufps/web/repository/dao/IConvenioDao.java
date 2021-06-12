@@ -15,7 +15,7 @@ public interface IConvenioDao extends JpaRepository<Convenio, Integer>{
 	@Query("select c from Convenio c where c.numConvenio=?1")
 	public Convenio findByNumConvenio(String convenio);
 	
-	@Query("select c from Convenio c where c.fecha between ?1 and ?2")
+	@Query("select c from Convenio c where  c.fecha between ?1 and ?2")
 	public List<Convenio> filtrarConvenios(Date desde,Date hasta);
 
 }
