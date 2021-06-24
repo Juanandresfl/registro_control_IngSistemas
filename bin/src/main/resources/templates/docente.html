@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+	
+<body>
+	<header th:replace="layout/layout :: header"> </header>
+	<div th:replace="layout/layout :: container"> </div>
+        <!-- Page wrapper  -->
+        <div class="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="white-box">
+                            <h3 class="box-title">Informacion de los docentes</h3>
+                            <br>
+                            <div class="table-responsive">
+                                <table class="table table-striped text-nowrap">
+                                    <thead class="thead">
+                                        <tr>
+                                            <th class="border-top-0">Codigo</th>
+                                            <th class="border-top-0">Nombres</th>
+                                            <th class="border-top-0">Apellidos</th>
+                                            <th class="border-top-0">Email</th>
+                                            <th class="border-top-0">Telefono</th>
+                                            <th class="border-top-0">Activar/Desactivar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each=" d: ${docentes}">
+                                            <td th:text="${d.codigo}"></td>
+                                            <td th:text="${d.nombre}"></td>
+                                            <td th:text="${d.apellido}"></td>
+                                            <td th:text="${d.email}"></td>
+                                            <td th:text="${d.phone}">
+                                            
+                                           
+                                            <td >  
+                                             <form th:action="@{/update-state}" method="post"> 
+                                             <input type="hidden" th:value="${d.codigo}" name="codigo">                                     
+                                                
+                                                <button  type="submit" class="btn btn-danger" 
+                                                th:if="${d.estado == 'activo'}">
+                                                 Desactivar </button>
+                                                 
+                                                 <button  type="submit" class="btn btn-success" th:if="${d.estado == 'inactivo'}">
+                                                 Activar </button>
+                                             </form>
+                                            </td>                                                                                                         
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer th:replace="layout/layout :: footer"></footer>
+        </div>
+</body>
+
+</html>

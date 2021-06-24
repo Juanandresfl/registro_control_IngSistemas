@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UFPS</title>
+<!-- Favicon icon -->
+<link href="https://ingsistemas.cloud.ufps.edu.co/rsc/img/favicon.ico" rel="Shortcut icon">
+<!-- Custom CSS -->
+<link th:href="@{/css/style.min.css}" rel="stylesheet">
+</head>
+
+
+<body>
+	<header class="topbar" data-navbarbg="skin5" th:fragment="header">
+		<div class="row container">
+			<nav class="navbar top-navbar navbar-expand-md navbar-dark">
+				<div class="col-md-4 col-sm-5">
+					<div class="navbar-header" data-logobg="skin6">
+						<!-- Logo -->
+						<a class="navbar-brand" th:href="@{/}"> <img
+							th:src="@{/plugins/images/logo.png}" width="110px"
+							height="100px" alt="homepage" />
+						</a>
+					</div>
+				</div>
+
+				<div class="col-md-8 col-sm-8">
+					<a class="nav-toggler waves-effect waves-light text-dark d-block d-md-none"
+                        href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
+					<div class="navbar-collapse collapse" id="navbarSupportedContent"
+						data-navbarbg="skin5">
+						<h1 class="nav-toggler waves-effect waves-light text-dark" th:text="${titulo}"></h1>
+						<ul class="navbar-nav ms-auto d-flex align-items-center dropdown">
+							<li>
+							<input sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-danger btn-md  dropdown-toggle"
+								id="dropdownMenuLink" data-bs-toggle="dropdown"
+								aria-expanded="false" value="Admin" readonly>
+							
+							<input sec:authorize="hasRole('ROLE_DOCENTE')" class="btn btn-danger btn-md  dropdown-toggle"
+								id="dropdownMenuLink" data-bs-toggle="dropdown"
+								aria-expanded="false" value="Docente" readonly>
+								
+								<div class="dropdown-divider"></div>
+								<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+									<li>
+										<form th:action="@{/logout}" method="post">
+											<button type="submit" class="dropdown-item">Cerrar
+												sesion</button>
+										</form>
+									</li>
+								</ul></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+		</div>
+	</header>
+
+	<div th:fragment="mensajes">
+		<div class="alert alert-success" th:if="${success != null}"
+			th:text="${success}"></div>
+		<div class="alert alert-danger" th:if="${error != null}"
+			th:text="${error}"></div>
+		<div class="alert alert-warning" th:if="${warning != null}"
+			th:text="${warning}"></div>
+		<div class="alert alert-info" th:if="${info != null}"
+			th:text="${info}"></div>
+	</div>
+
+	<!-- Main wrapper - style you can find in pages.scss -->
+	<div th:fragment="container" id="main-wrapper" data-layout="vertical"
+		data-navbarbg="skin5" data-sidebartype="full"
+		data-sidebar-position="absolute" data-header-position="absolute"
+		data-boxed-layout="full">
+		<br> <br>
+		<aside class="left-sidebar" data-sidebarbg="skin6">
+			<!-- Sidebar scroll-->
+			<div class="scroll-sidebar">
+				<!-- Sidebar navigation-->
+				<nav class="sidebar-nav">
+					<ul id="sidebarnav">
+						<br>
+						<hr>
+						<!-- User Profile-->
+						<li class="sidebar-item pt-2"><a
+							class="sidebar-link waves-effect waves-dark sidebar-link"
+							th:href="@{/}" aria-expanded="false"> <i class="far fa-clock"
+								aria-hidden="true"></i> <span class="hide-menu">Dashboard</span>
+						</a></li>
+						<li class="sidebar-item"><a
+							class="sidebar-link waves-effect waves-dark sidebar-link"
+							th:href="@{/perfil}" aria-expanded="false"> <i
+								class="fa fa-user" aria-hidden="true"></i> <span
+								class="hide-menu">Perfil</span>
+						</a></li>
+						<li class="sidebar-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="sidebar-link waves-effect waves-dark sidebar-link"
+							th:href="@{/docentes}" aria-expanded="false"> <i
+								class="fa fa-table" aria-hidden="true"></i> <span
+								class="hide-menu">Docentes</span>
+						</a></li>
+						<li class="sidebar-item"><a
+							class="sidebar-link waves-effect waves-dark sidebar-link"
+							th:href="@{/actividad/}" aria-expanded="false"> <i
+								class="fa fa-columns" aria-hidden="true"></i> <span
+								class="hide-menu">Registrar actividad</span>
+						</a></li>
+						
+						<li class="sidebar-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="sidebar-link waves-effect waves-dark sidebar-link"
+							th:href="@{/convenio}" aria-expanded="false"> <i
+								class=" far fa-folder" aria-hidden="true"></i> <span
+								class="hide-menu">Registrar convenio</span>
+						</a></li>
+						
+						<li class="sidebar-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="sidebar-link waves-effect waves-dark sidebar-link"
+							th:href="@{/registrar-docente}" aria-expanded="false"> <i
+								class="fas fa-user-plus" aria-hidden="true"></i> <span
+								class="hide-menu">Registrar docente</span>
+						</a></li>
+						
+						<li class="sidebar-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="sidebar-link waves-effect waves-dark sidebar-link"
+							th:href="@{/tipoActividad}" aria-expanded="false"> <i
+								class=" fas fa-clipboard-list" aria-hidden="true"></i> <span
+								class="hide-menu">Registrar tipo de actividad</span>
+						</a></li>
+						
+						<li class="sidebar-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="sidebar-link waves-effect waves-dark sidebar-link"
+							th:href="@{/listar-convenios}" aria-expanded="false"> <i
+								class="fas fa-list" aria-hidden="true"></i> <span
+								class="hide-menu">Listar convenios </span>
+						</a></li>
+					</ul>
+				</nav>
+				<!-- End Sidebar navigation -->
+			</div>
+			<!-- End Sidebar scroll-->
+		</aside>
+</body>
+
+<footer class="footer text-center" th:fragment="footer">
+	<b>Ingeníeria de Sistemas (UFPS)-2021</b>
+
+	<script th:src="@{/plugins/bower_components/jquery/dist/jquery.min.js}"></script>
+	<!-- Bootstrap tether Core JavaScript -->
+	<script th:src="@{/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/bootstrap/dist/js/bootstrap.min.js}"></script>
+	<!--Menu sidebar -->
+	<script th:src="@{/js/sidebarmenu.js}"></script>
+	<!--Custom JavaScript -->
+	<script th:src="@{/js/custom.js}"></script>
+	<!--This page JavaScript -->
+	<script th:src="@{/js/pages/dashboards/dashboard1.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+
+</footer>
+</html>

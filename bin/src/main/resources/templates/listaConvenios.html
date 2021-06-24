@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+	
+<body>
+	<header th:replace="layout/layout :: header"> </header>
+	<div th:replace="layout/layout :: container"> </div>
+        <!-- Page wrapper  -->
+        <div class="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">              
+                        <div class="white-box">
+                        	 <form method="post"
+								th:action="@{/filtrar-convenios}">
+								<div class="row">
+									<div class="form-group col-md-12 col-lg-4">
+										<label> Fecha de inicio </label> <input type="date"
+											name="desde">
+									</div>
+									<div class="form-group col-md-12 col-lg-4">
+										<label> Fecha de fin </label> <input type="date" name="hasta">
+									</div>
+									<div class="form-group col-md-12 col-lg-4">
+										<button type="submit" class="btn btn-danger">Filtrar
+											convenios</button>
+									</div>
+								</div>
+							</form>
+                            <h3 class="box-title">Informacion</h3>
+                            <br>
+                            <div class="table-responsive">
+                                <table class="table table-striped text-nowrap text-center">
+                                    <thead class="thead">
+                                        <tr>
+                                            <th class="border-top-0">Numero del convenio</th>
+                                            <th class="border-top-0">Institucion</th>
+                                             <th class="border-top-0">Descripcion </th>
+                                            <th class="border-top-0">Fecha</th>
+                                            <th class="border-top-0">Documento</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each= "c: ${convenios}">
+                                            <td th:text="${c.numConvenio}"></td>
+                                            <td th:text="${c.institucion}"></td>
+                                            <td th:text="${c.descripcion}"></td>
+                                            <td th:text="${c.fecha}"></td>
+                                            <td>
+                                                <a th:if="${c.evidencias != null &&  not c.evidencias.isEmpty()}" th:href="@{'/download/' + ${c.evidencias.get(0).url}}" target="blank" class="btn btn-outline-primary"> <i
+													class=" fas fa-download" aria-hidden="true"></i>&nbsp Descargar 
+												</a>
+												
+												<a th:if="${c.evidencias == null ||  c.evidencias.isEmpty()}" class="btn btn-outline-secondary"> <i
+													class=" fas fa-download" aria-hidden="true"></i>&nbsp No hay documentos 
+												</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                                 <h5> <b>Total de convenios: <span th:text="${convenios.size()}"></span></b></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer th:replace="layout/layout :: footer"></footer>
+        </div>
+</body>
+
+</html>
