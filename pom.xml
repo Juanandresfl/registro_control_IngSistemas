@@ -14,7 +14,7 @@
 	<name>registro_control_IngSistemas</name>
 	<description>Sistema web para el registro y control de las actividades realizadas por el Programa ingenieria de sistemas UFPS</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>16</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
